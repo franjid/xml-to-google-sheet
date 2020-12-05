@@ -6,6 +6,11 @@ use App\Domain\Entity\MappedXml;
 
 class HelperMappedXml
 {
+    /**
+     * Mapped data from data/coffee_feed_test
+     *
+     * @return MappedXml
+     */
     public function getTestDataMappedXml(): MappedXml
     {
         return new MappedXml(

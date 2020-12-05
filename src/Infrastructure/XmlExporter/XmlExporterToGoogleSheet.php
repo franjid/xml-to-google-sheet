@@ -34,20 +34,10 @@ class XmlExporterToGoogleSheet implements XmlExporterInterface
     public function export(MappedXml $mappedXml): string
     {
         $sheetId = $this->createSheet();
-        $this->setPermissions($sheetId);
+        $this->setSheetPermissions($sheetId);
 
-        // Headers
-        $range = 'A1';
-        $values = [$mappedXml->getHeaders()];
-        $body = new Google_Service_Sheets_ValueRange(['values' => $values]);
-        $params = ['valueInputOption' => 'USER_ENTERED'];
-        $this->googleServiceSheets->spreadsheets_values->append($sheetId, $range, $body, $params);
-
-        // Data
-        $range = 'A2';
-        $body = new Google_Service_Sheets_ValueRange(['values' => $mappedXml->getData()]);
-        $params = ['valueInputOption' => 'USER_ENTERED'];
-        $this->googleServiceSheets->spreadsheets_values->append($sheetId, $range, $body, $params);
+        $this->exportHeaders($mappedXml, $sheetId);
+        $this->exportData($mappedXml, $sheetId);
 
         return $sheetId;
     }
@@ -63,7 +53,7 @@ class XmlExporterToGoogleSheet implements XmlExporterInterface
         return $spreadsheet->spreadsheetId;
     }
 
-    private function setPermissions(string $sheetId): void
+    private function setSheetPermissions(string $sheetId): void
     {
         $permission = new Google_Service_Drive_Permission();
         $permission->setType('anyone');
@@ -74,5 +64,23 @@ class XmlExporterToGoogleSheet implements XmlExporterInterface
         } catch (\Exception $e) {
             print "An error occurred: " . $e->getMessage();
         }
+    }
+
+    private function exportHeaders(MappedXml $mappedXml, string $sheetId): void
+    {
+        $range = 'A1';
+        $body = new Google_Service_Sheets_ValueRange(['values' => [$mappedXml->getHeaders()]]);
+        $params = ['valueInputOption' => 'USER_ENTERED'];
+
+        $this->googleServiceSheets->spreadsheets_values->append($sheetId, $range, $body, $params);
+    }
+
+    private function exportData(MappedXml $mappedXml, string $sheetId): void
+    {
+        $range = 'A2';
+        $body = new Google_Service_Sheets_ValueRange(['values' => $mappedXml->getData()]);
+        $params = ['valueInputOption' => 'USER_ENTERED'];
+
+        $this->googleServiceSheets->spreadsheets_values->append($sheetId, $range, $body, $params);
     }
 }

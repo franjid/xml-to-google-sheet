@@ -29,6 +29,12 @@ class XmlExporterToGoogleSheetTest extends TestCase
         parent::setUp();
 
         $googleClientMock = $this->createMock(Google_Client::class);
+        $googleClientMock->expects(static::once())
+            ->method('setScopes')
+            ->with([
+                Google_Service_Sheets::SPREADSHEETS,
+                Google_Service_Drive::DRIVE,
+            ]);
 
         $googleServiceSheetsMock = $this->createMock(Google_Service_Sheets::class);
         $this->spreadsheetsResourceMock = $this->createMock(Google_Service_Sheets_Resource_Spreadsheets::class);
