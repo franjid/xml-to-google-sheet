@@ -4,6 +4,7 @@ namespace App\Infrastructure\XmlExporter;
 
 use App\Domain\Entity\MappedXml;
 use App\Domain\Interfaces\XmlExporterInterface;
+use App\Infrastructure\XmlExporter\Exception\PermissionsErrorException;
 use Google_Client;
 use Google_Service_Drive;
 use Google_Service_Drive_Permission;
@@ -61,7 +62,7 @@ class XmlExporterToGoogleSheet implements XmlExporterInterface
 
         try {
             $this->googleServiceDrive->permissions->create($sheetId, $permission);
-        } catch (\Exception $e) {
+        } catch (PermissionsErrorException $e) {
             print "An error occurred: " . $e->getMessage();
         }
     }

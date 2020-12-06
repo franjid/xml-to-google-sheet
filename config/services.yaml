@@ -36,3 +36,9 @@ services:
             - '@Google_Client'
             - '@GoogleServiceSheets'
             - '@GoogleServiceDrive'
+
+    App\Infrastructure\FileReader\FileReaderFactory:
+        arguments:
+            - '%env(XML_FILES_HOST)%'
+            - '%env(XML_FILES_USER)%'
+            - '%env(XML_FILES_PASSWORD)%'

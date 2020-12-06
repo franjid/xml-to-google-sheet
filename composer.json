@@ -10,6 +10,7 @@
         "ext-simplexml": "*",
         "ext-libxml": "*",
         "ext-json": "*",
+        "ext-ftp": "*",
         "google/apiclient": "^2.8",
         "symfony/console": "5.2.*",
         "symfony/dotenv": "5.2.*",
