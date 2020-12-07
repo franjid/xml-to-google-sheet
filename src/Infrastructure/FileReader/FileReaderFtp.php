@@ -40,9 +40,10 @@ class FileReaderFtp implements FileReaderInterface
         $tmpFile = tempnam('/tmp', 'FTP_FILE');
 
         try {
+            ftp_pasv($connection, TRUE);
             ftp_get($connection, $tmpFile, $file, FTP_BINARY);
         } catch (\Exception $e) {
-            throw new FtpFileNotFoundException('Error getting file: ' . $file);
+            throw new FtpFileNotFoundException('Error getting file: ' . $file . '(' . $e->getMessage() . ')');
         }
 
         $fileContents = file_get_contents($tmpFile);

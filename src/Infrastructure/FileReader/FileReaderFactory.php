@@ -3,7 +3,7 @@
 namespace App\Infrastructure\FileReader;
 
 use App\Domain\Interfaces\FileReaderInterface;
-use LogicException;
+use App\Infrastructure\FileReader\Exception\InvalidFileReaderException;
 
 class FileReaderFactory
 {
@@ -37,8 +37,7 @@ class FileReaderFactory
                     $this->ftpPassword
                 );
             default:
-                // @todo: Create more specific exception
-                throw new LogicException('FileReader type not valid');
+                throw new InvalidFileReaderException('FileReader type not valid');
         }
     }
 }
